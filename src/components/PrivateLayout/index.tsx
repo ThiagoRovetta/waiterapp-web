@@ -1,12 +1,11 @@
 import { useContext } from 'react';
 import { Outlet, useLocation, Navigate } from 'react-router-dom';
 
-import { Container } from './styles';
+import { Container, Content } from './styles';
 
 import { AuthContext } from '../../contexts/AuthContext';
 import { Header } from '../Header';
 import { Menu } from '../Menu';
-import { Orders } from '../Orders';
 
 export function PrivateLayout() {
   const { authenticated } = useContext(AuthContext);
@@ -19,9 +18,10 @@ export function PrivateLayout() {
   return (
     <Container>
       <Menu />
-      <Header />
-      <Orders />
-      <Outlet />
+      <Content>
+        <Header />
+        <Outlet />
+      </Content>
     </Container>
   );
 }

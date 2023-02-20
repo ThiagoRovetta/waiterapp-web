@@ -1,9 +1,7 @@
 import { useState } from 'react';
-import { toast } from 'react-toastify';
 
 import { Order } from '../../types/Order';
 import { OrderModal } from '../OrderModal';
-import { api } from '../../utils/api';
 
 import { Board, OrdersContainer } from './styles';
 
@@ -11,13 +9,13 @@ interface OrderBoardProps {
   icon: string;
   title: string;
   orders: Order[];
-  onCancelOrder: (orderId: string) => void;
-  onChangeOrderStatus: (orderId: string, status: Order['status']) => void;
+	onCancelOrder: (order: Order) => void;
+	onChangeOrderStatus: (order: Order) => void;
 }
 
 export function OrdersBoard({ icon, title, orders, onCancelOrder, onChangeOrderStatus }: OrderBoardProps) {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [selectedOrder, setSelectedOrder] = useState<Order>({} as Order);
   const [isLoading, setIsLoading] = useState(false);
 
   function handleOpenModal(order: Order) {
@@ -27,20 +25,14 @@ export function OrdersBoard({ icon, title, orders, onCancelOrder, onChangeOrderS
 
   function handleCloseModal() {
     setIsModalVisible(false);
-    setSelectedOrder(null);
+    setSelectedOrder({} as Order);
   }
 
   async function handleChangeOrderStatus() {
     setIsLoading(true);
 
-    const status = selectedOrder?.status === 'WAITING'
-      ? 'IN_PRODUCTION'
-      : 'DONE';
+    onChangeOrderStatus(selectedOrder);
 
-    await api.patch(`/orders/${selectedOrder?._id}`, { status });
-
-    toast.success(`O pedido da mesa ${selectedOrder?.table} teve o status alterado!`);
-    onChangeOrderStatus(selectedOrder!._id, status);
     setIsLoading(false);
     setIsModalVisible(false);
   }
@@ -48,10 +40,8 @@ export function OrdersBoard({ icon, title, orders, onCancelOrder, onChangeOrderS
   async function handleCancelOrder() {
     setIsLoading(true);
 
-    await api.delete(`/orders/${selectedOrder?._id}`);
+    onCancelOrder(selectedOrder);
 
-    toast.success(`O pedido da mesa ${selectedOrder?.table} foi cancelado!`);
-    onCancelOrder(selectedOrder!._id);
     setIsLoading(false);
     setIsModalVisible(false);
   }
