@@ -66,6 +66,7 @@ export const OrderDetails = styled.div`
 
     .item {
       display: flex;
+      align-items: center;
 
       & + .item {
         margin-top: 16px;
@@ -81,6 +82,7 @@ export const OrderDetails = styled.div`
         display: block;
         min-width: 20px;
         margin-left: 12px;
+        padding-bottom: 28px;
       }
 
       .product-details {
@@ -114,9 +116,10 @@ export const OrderDetails = styled.div`
 `;
 
 export const Actions = styled.footer`
-  display: flex;
-  flex-direction: column;
   margin-top: 32px;
+
+  display: flex;
+  justify-content: space-between;
 
   button:disabled {
     opacity: 0.5;
@@ -124,23 +127,40 @@ export const Actions = styled.footer`
   }
 
   .primary {
-    background: #333333;
-    border-radius: 48px;
-    border: 0;
-    color: #fff;
-    padding: 12px 24px;
+    padding: 14px 56px;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     gap: 8px;
+
+    font-weight: 600;
+    font-size: 16px;
+    color: #fff;
+
+    background: #D73035;
+
+    border: 0;
+    border-radius: 44px;
+
+    &:disabled {
+      background: rgba(215, 48, 53, 0.7);
+    }
   }
 
   .secondary {
-    padding: 14px 24px;
-    color: #D73035;
-    font-weight: bold;
+    padding: 14px 0;
+
     border: 0;
     background: transparent;
-    margin-top: 12px;
+
+    font-weight: 600;
+    font-size: 16px;
+    color: #D73035;
+
+    &:disabled {
+      color: #CCCCCC;
+    }
   }
 `;

@@ -32,8 +32,12 @@ export function OrdersProvider({ children }: OrdersProviderProps) {
     });
   }, []);
 
-  async function handleGetOrders() {
-    api.get('/orders')
+  async function handleGetOrders(archived = false) {
+    api.get('/orders', {
+      params: {
+        archived
+      }
+    })
       .then(({ data }) => {
         setOrders(data);
       });
