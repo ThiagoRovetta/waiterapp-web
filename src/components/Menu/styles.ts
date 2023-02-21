@@ -72,12 +72,13 @@ export const NavContainer = styled.div`
         content: "";
         position: absolute;
 
-        left: 35%;
+        left: calc(50% - 6px);
         bottom: 0;
 
-        height: 1px;
-        width: 30%;
+        height: 0px;
+        width: 12px;
         border-bottom: 1.5px solid #D73035;
+        border-radius: 1px;
       }
     }
   }
