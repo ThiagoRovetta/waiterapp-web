@@ -11,7 +11,7 @@ import { UsersIcon } from '../Icons/UsersIcon';
 import { ProfileIcon } from '../Icons/ProfileIcon';
 import { LogoutIcon } from '../Icons/LogoutIcon';
 
-export function Menu() {
+export function NavMenu() {
   const { handleLogout } = useContext(AuthContext);
 
   const location = useLocation();

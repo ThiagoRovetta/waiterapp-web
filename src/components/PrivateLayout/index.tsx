@@ -5,7 +5,7 @@ import { Container, Content } from './styles';
 
 import { AuthContext } from '../../contexts/AuthContext';
 import { Header } from '../Header';
-import { Menu } from '../Menu';
+import { NavMenu } from '../NavMenu';
 
 export function PrivateLayout() {
   const { authenticated } = useContext(AuthContext);
@@ -17,7 +17,7 @@ export function PrivateLayout() {
 
   return (
     <Container>
-      <Menu />
+      <NavMenu />
       <Content>
         <Header />
         <Outlet />
