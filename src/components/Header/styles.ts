@@ -48,7 +48,7 @@ export const Content = styled.div`
       font-weight: 500;
 
       color: #666666;
-      opacity: 0.9;
+      /* opacity: 0.9; */
     }
   }
 

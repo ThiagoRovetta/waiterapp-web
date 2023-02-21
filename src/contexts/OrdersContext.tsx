@@ -15,12 +15,16 @@ interface OrdersContextData {
 	handleCancelOrder: (order: Order) => void;
 	handleChangeOrderStatus: (order: Order) => void;
   handleRestartDay: () => void;
+	archivedOrders: Order[];
+  handleGetArchivedOrders: () => void;
+  handleDeleteArchivedOrder: (order: Order) => void;
 }
 
 export const OrdersContext = createContext<OrdersContextData>({} as OrdersContextData);
 
 export function OrdersProvider({ children }: OrdersProviderProps) {
   const [orders, setOrders] = useState<Order[]>([]);
+  const [archivedOrders, setArchivedOrders] = useState<Order[]>([]);
 
   useEffect(() => {
     const socket = socketIo('http://localhost:3001', {
@@ -32,14 +36,21 @@ export function OrdersProvider({ children }: OrdersProviderProps) {
     });
   }, []);
 
-  async function handleGetOrders(archived = false) {
+  async function handleGetOrders() {
+    api.get('/orders')
+      .then(({ data }) => {
+        setOrders(data);
+      });
+  }
+
+  async function handleGetArchivedOrders() {
     api.get('/orders', {
       params: {
-        archived
+        archived: true
       }
     })
       .then(({ data }) => {
-        setOrders(data);
+        setArchivedOrders(data);
       });
   }
 
@@ -75,8 +86,25 @@ export function OrdersProvider({ children }: OrdersProviderProps) {
     setOrders([]);
   }
 
+  async function handleDeleteArchivedOrder(currentOrder: Order) {
+    await api.delete(`/orders/${currentOrder._id}`);
+
+    toast.success('Registro excluído com sucesso!');
+
+    setArchivedOrders((prevState) => prevState.filter(order => order._id !== currentOrder._id));
+  }
+
   return (
-    <OrdersContext.Provider value={{ orders, handleGetOrders, handleCancelOrder, handleChangeOrderStatus, handleRestartDay }}>
+    <OrdersContext.Provider value={{
+      orders,
+      handleGetOrders,
+      handleCancelOrder,
+      handleChangeOrderStatus,
+      handleRestartDay,
+      archivedOrders,
+      handleGetArchivedOrders,
+      handleDeleteArchivedOrder
+    }}>
       {children}
     </OrdersContext.Provider>
   );

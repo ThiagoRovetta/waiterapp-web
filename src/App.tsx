@@ -10,6 +10,7 @@ import { Login } from './pages/Login';
 import { PrivateLayout } from './components/PrivateLayout';
 import { Home } from './pages/Home';
 import { OrdersProvider } from './contexts/OrdersContext';
+import { History } from './pages/History';
 
 export function App() {
   return (
@@ -36,6 +37,7 @@ export function App() {
             </OrdersProvider>
           }>
             <Route path="/home" element={<Home />} />
+            <Route path="/history" element={<History />} />
           </Route>
         </Routes>
       </AuthProvider>

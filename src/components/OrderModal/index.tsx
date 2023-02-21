@@ -11,7 +11,9 @@ interface OrderModalProps {
   onClose: () => void;
   onCancelOrder: () => Promise<void>;
   isLoading: boolean;
-  onChangeOrderStatus: () => void;
+  onChangeOrderStatus?: () => void;
+  archived?: boolean;
+  viewOnly?: boolean;
 }
 
 export function OrderModal({
@@ -20,7 +22,9 @@ export function OrderModal({
   onClose,
   onCancelOrder,
   isLoading,
-  onChangeOrderStatus
+  onChangeOrderStatus,
+  archived = false,
+  viewOnly = false,
 }: OrderModalProps) {
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
@@ -56,20 +60,33 @@ export function OrderModal({
         </header>
 
         <div className="status-container">
-          <small>Status do pedido</small>
-          <div>
-            <span>
-              {order.status === 'WAITING' && '🕒'}
-              {order.status === 'IN_PRODUCTION' && '🧑‍🍳'}
-              {order.status === 'DONE' && '✅'}
-            </span>
+          {archived ? (
+            <>
+              <small>Data do pedido</small>
+              <div>
+                <strong>
+                  {new Intl.DateTimeFormat('pt-BR').format(new Date(order.createdAt))}
+                </strong>
+              </div>
+            </>
+          ) : (
+            <>
+              <small>Status do pedido</small>
+              <div>
+                <span>
+                  {order.status === 'WAITING' && '🕒'}
+                  {order.status === 'IN_PRODUCTION' && '🧑‍🍳'}
+                  {order.status === 'DONE' && '✅'}
+                </span>
 
-            <strong>
-              {order.status === 'WAITING' && 'Fila de espera'}
-              {order.status === 'IN_PRODUCTION' && 'Em preparação'}
-              {order.status === 'DONE' && 'Pronto!'}
-            </strong>
-          </div>
+                <strong>
+                  {order.status === 'WAITING' && 'Fila de espera'}
+                  {order.status === 'IN_PRODUCTION' && 'Em preparação'}
+                  {order.status === 'DONE' && 'Pronto!'}
+                </strong>
+              </div>
+            </>
+          )}
         </div>
 
         <OrderDetails>
@@ -101,31 +118,33 @@ export function OrderModal({
           </div>
         </OrderDetails>
 
-        <Actions>
-          <button
-            type="button"
-            className="secondary"
-            onClick={onCancelOrder}
-            disabled={isLoading}
-          >
-            Cancelar pedido
-          </button>
-
-          {order.status !== 'DONE' && (
+        {!viewOnly && (
+          <Actions>
             <button
               type="button"
-              className="primary"
+              className="secondary"
+              onClick={onCancelOrder}
               disabled={isLoading}
-              onClick={onChangeOrderStatus}
             >
-              <span>
-                {order.status === 'WAITING' && 'Iniciar Produção'}
-                {order.status === 'IN_PRODUCTION' && 'Concluir Pedido'}
-              </span>
+              {archived ? 'Excluir registro' : 'Cancelar pedido'}
             </button>
-          )}
-        </Actions>
-      </ModalBody>;
+
+            {order.status !== 'DONE' && !archived && (
+              <button
+                type="button"
+                className="primary"
+                disabled={isLoading}
+                onClick={onChangeOrderStatus}
+              >
+                <span>
+                  {order.status === 'WAITING' && 'Iniciar Produção'}
+                  {order.status === 'IN_PRODUCTION' && 'Concluir Pedido'}
+                </span>
+              </button>
+            )}
+          </Actions>
+        )}
+      </ModalBody>
     </Overlay>
   );
 }

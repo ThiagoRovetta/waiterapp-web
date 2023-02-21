@@ -9,6 +9,13 @@ export interface Order {
       name: string;
       imagePath: string;
       price: number;
+      category: {
+        _id: string;
+        name: string;
+        icon: string;
+      }
     }
   }[]
+  archived: boolean;
+  createdAt: string;
 }

@@ -5,6 +5,7 @@ import { Container, Content } from './styles';
 import { HomeIcon } from '../Icons/HomeIcon';
 import { RestartIcon } from '../Icons/RestartIcon';
 import { RestartModal } from '../RestartModal';
+import { HistoryIcon } from '../Icons/HistoryIcon';
 
 interface PageDetails {
   [args: string]: {
@@ -19,6 +20,11 @@ const pageDetails: PageDetails = {
     name: 'Home',
     description: 'Acompanhe os pedidos dos clientes',
     Icon: HomeIcon
+  },
+  history: {
+    name: 'Histórico',
+    description: 'Visualize pedidos anteriores',
+    Icon: HistoryIcon
   }
 };
 
