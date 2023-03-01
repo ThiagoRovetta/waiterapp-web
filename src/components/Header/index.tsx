@@ -6,6 +6,7 @@ import { HomeIcon } from '../Icons/HomeIcon';
 import { RestartIcon } from '../Icons/RestartIcon';
 import { RestartModal } from '../RestartModal';
 import { HistoryIcon } from '../Icons/HistoryIcon';
+import { MenuIcon } from '../Icons/MenuIcon';
 
 interface PageDetails {
   [args: string]: {
@@ -25,7 +26,12 @@ const pageDetails: PageDetails = {
     name: 'Histórico',
     description: 'Visualize pedidos anteriores',
     Icon: HistoryIcon
-  }
+  },
+  menu: {
+    name: 'Cardápio',
+    description: 'Gerencie os produtos do seu estabelecimento',
+    Icon: MenuIcon
+  },
 };
 
 export function Header() {

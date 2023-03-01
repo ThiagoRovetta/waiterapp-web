@@ -21,13 +21,20 @@ export const Container = styled.div`
     p {
       padding: 4px 8px;
 
-      /* width: 26px; */
-      /* height: 27px; */
-
       background: rgba(204, 204, 204, 0.2);
       border-radius: 4px;
 
       color: #333333;
     }
+  }
+
+  button {
+    border: 0;
+    background: transparent;
+
+    font-weight: 600;
+    font-size: 14px;
+
+    color: #D73035;
   }
 `;
