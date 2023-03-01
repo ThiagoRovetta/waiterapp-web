@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
+
+import { Overlay, ModalBody, OrderDetails, Actions } from './styles';
+
 import closeIcon from '../../assets/images/close-icon.svg';
 import { Order } from '../../types/Order';
 import { formatCurrency } from '../../utils/formatCurrency';
-
-import { Overlay, ModalBody, OrderDetails, Actions } from './styles';
+import { formatDate } from '../../utils/formatDate';
 
 interface OrderModalProps {
   visible: boolean;
@@ -65,7 +67,7 @@ export function OrderModal({
               <small>Data do pedido</small>
               <div>
                 <strong>
-                  {new Intl.DateTimeFormat('pt-BR').format(new Date(order.createdAt))}
+                  {formatDate(new Date(order.createdAt))}
                 </strong>
               </div>
             </>

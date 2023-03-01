@@ -8,6 +8,8 @@ import { Table } from '../../components/Table';
 import { FilterIcon } from '../../components/Icons/FilterIcon';
 import { EyeIcon } from '../../components/Icons/EyeIcon';
 import { TrashIcon } from '../../components/Icons/TrashIcon';
+import { formatCurrency } from '../../utils/formatCurrency';
+import { formatDate } from '../../utils/formatDate';
 
 export function History() {
   const { archivedOrders, handleGetArchivedOrders, handleDeleteArchivedOrder } = useContext(OrdersContext);
@@ -73,14 +75,12 @@ export function History() {
           {archivedOrders.map(order => (
             <tr key={order._id}>
               <td>{order.table}</td>
-              <td>{new Intl.DateTimeFormat('pt-BR')
-                .format(new Date(order.createdAt))}</td>
+              <td>{formatDate(new Date(order.createdAt))}</td>
               <td>{order.products.map(product => product.product.name).join(', ')}</td>
               <td>{order.products.map(product => `${product.product.category?.icon} ${product.product.category?.name}`).join(', ')}</td>
-              <td>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
-                .format(order.products.reduce((total, { product, quantity }) => {
-                  return total + (product.price * quantity);
-                }, 0))}
+              <td>{formatCurrency(order.products.reduce((total, { product, quantity }) => {
+                return total + (product.price * quantity);
+              }, 0))}
               </td>
               <td>
                 <div className="actions">
