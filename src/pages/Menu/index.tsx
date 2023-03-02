@@ -13,6 +13,13 @@ import { formatCurrency } from '../../utils/formatCurrency';
 import { ProductModal } from '../../components/ProductModal';
 import { Category } from '../../types/Category';
 import { DeleteProductModal } from '../../components/DeleteProductModal';
+import { CategoryModal } from '../../components/CategoryModal';
+import { DeleteCategoryModal } from '../../components/DeleteCategoryModal';
+
+interface FormDataTypeCategory {
+  icon: string;
+  name: string;
+}
 
 interface FormDataType {
   name: string;
@@ -28,11 +35,14 @@ export function Menu() {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+  const [isProductModalVisible, setIsProductModalVisible] = useState(false);
+  const [isDeleteProductModalVisible, setIsDeleteProductModalVisible] = useState(false);
+  const [isCategoryModalVisible, setIsCategoryModalVisible] = useState(false);
+  const [isDeleteCategoryModalVisible, setIsDeleteCategoryModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  async function getProducts() {
+  async function getData() {
     Promise.all([
       api.get('/products'),
       api.get('/categories'),
@@ -75,7 +85,7 @@ export function Menu() {
 
         setProducts((prevState) => [ ...prevState, newProduct]);
 
-        handleCloseModal();
+        handleCloseProductModal();
       })
       .catch((error) => {
         console.log('error', error);
@@ -110,7 +120,7 @@ export function Menu() {
           return newState;
         });
 
-        handleCloseModal();
+        handleCloseProductModal();
       })
       .catch((error) => {
         console.log('error', error);
@@ -134,7 +144,77 @@ export function Menu() {
           return newState;
         });
 
-        handleCloseModal();
+        handleCloseProductModal();
+      })
+      .catch((error) => {
+        console.log('error', error);
+      });
+  }
+
+  async function addCategory({ name, icon }: FormDataTypeCategory) {
+    api.post('/categories', { name, icon })
+      .then((response) => {
+        toast.success('Categoria adicionada com sucesso!');
+
+        const newCategory = {
+          _id: response.data._id,
+          icon: response.data.icon,
+          name: response.data.name,
+        };
+
+        setCategories((prevState) => [ ...prevState, newCategory]);
+
+        handleCloseCategoryModal();
+      })
+      .catch((error) => {
+        console.log('error', error);
+      });
+  }
+
+  async function updateCategory(id: string, {
+    name, icon
+  }: FormDataTypeCategory) {
+    api.put(`/categories/${id}`, { name, icon })
+      .then((response) => {
+        toast.success('Categoria alterada com sucesso!');
+
+        setCategories((prevState) => {
+          const newState = [ ...prevState ];
+
+          const index = newState.findIndex((cat) => cat._id === id);
+
+          if (index > -1) {
+            newState[index] = response.data;
+          }
+
+          return newState;
+        });
+
+        handleCloseCategoryModal();
+      })
+      .catch((error) => {
+        console.log('error', error);
+      });
+  }
+
+  async function deleteCategory(id: string) {
+    api.delete(`/categories/${id}`)
+      .then(() => {
+        toast.success('Categoria excluída com sucesso!');
+
+        setCategories((prevState) => {
+          const newState = [ ...prevState ];
+
+          const index = newState.findIndex((cat) => cat._id === id);
+
+          if (index > -1) {
+            newState.splice(index, 1);
+          }
+
+          return newState;
+        });
+
+        handleCloseCategoryModal();
       })
       .catch((error) => {
         console.log('error', error);
@@ -142,31 +222,55 @@ export function Menu() {
   }
 
   useEffect(() => {
-    getProducts();
+    getData();
   }, []);
 
-  function handleOpenModal(product?: Product) {
+  function handleOpenProductModal(product?: Product) {
     if (product) {
       setSelectedProduct(product);
     }
-    setIsModalVisible(true);
+    setIsProductModalVisible(true);
   }
 
-  function handleOpenDeleteModal(product?: Product) {
+  function handleOpenDeleteProductModal(product?: Product) {
     if (product) {
       setSelectedProduct(product);
     }
-    setIsDeleteModalVisible(true);
+    setIsDeleteProductModalVisible(true);
   }
 
-  function handleCloseModal() {
+  function handleCloseProductModal() {
     setSelectedProduct(null);
-    setIsModalVisible(false);
+    setIsProductModalVisible(false);
   }
 
-  function handleCloseDeleteModal() {
+  function handleCloseDeleteProductModal() {
     setSelectedProduct(null);
-    setIsDeleteModalVisible(false);
+    setIsDeleteProductModalVisible(false);
+  }
+
+  function handleOpenCategoryModal(category?: Category) {
+    if (category) {
+      setSelectedCategory(category);
+    }
+    setIsCategoryModalVisible(true);
+  }
+
+  function handleOpenDeleteCategoryModal(category?: Category) {
+    if (category) {
+      setSelectedCategory(category);
+    }
+    setIsDeleteCategoryModalVisible(true);
+  }
+
+  function handleCloseCategoryModal() {
+    setSelectedCategory(null);
+    setIsCategoryModalVisible(false);
+  }
+
+  function handleCloseDeleteCategoryModal() {
+    setSelectedCategory(null);
+    setIsDeleteCategoryModalVisible(false);
   }
 
   if (isLoading) {
@@ -176,21 +280,38 @@ export function Menu() {
   return (
     <>
       <ProductModal
-        visible={isModalVisible}
+        visible={isProductModalVisible}
         product={selectedProduct}
         categories={categories}
         isLoading={false}
-        onClose={handleCloseModal}
+        onClose={handleCloseProductModal}
         onAddProduct={addProduct}
         onUpdateProduct={updateProduct}
         onDeleteProduct={deleteProduct}
       />
 
       <DeleteProductModal
-        visible={isDeleteModalVisible}
-        onClose={handleCloseDeleteModal}
+        visible={isDeleteProductModalVisible}
+        onClose={handleCloseDeleteProductModal}
         onDeleteProduct={deleteProduct}
         product={selectedProduct}
+      />
+
+      <CategoryModal
+        visible={isCategoryModalVisible}
+        category={selectedCategory}
+        isLoading={false}
+        onClose={handleCloseCategoryModal}
+        onAddCategory={addCategory}
+        onUpdateCategory={updateCategory}
+        onDeleteCategory={deleteCategory}
+      />
+
+      <DeleteCategoryModal
+        visible={isDeleteCategoryModalVisible}
+        onClose={handleCloseDeleteCategoryModal}
+        onDeleteCategory={deleteCategory}
+        category={selectedCategory}
       />
 
       <Container>
@@ -209,51 +330,92 @@ export function Menu() {
           </div>
         </NavTab>
         <NavContent>
-          <Title
-            title='Produtos'
-            quantity={products.length}
-            label='Novo Produto'
-            onClick={() => handleOpenModal()}
-          />
-          <Table>
-            <thead>
-              <tr>
-                <th>Imagem</th>
-                <th>Nome</th>
-                <th>Categoria</th>
-                <th>Preço</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.map(product => (
-                <tr key={product._id}>
-                  <td>
-                    <img
-                      src={`http://localhost:3001/uploads/${product.imagePath}`}
-                      alt={product.name}
-                      width="48"
-                      height="40"
-                    />
-                  </td>
-                  <td>{product.name}</td>
-                  <td>{`${product.category.icon} ${product.category.name}`}</td>
-                  <td>{formatCurrency(product.price)}
-                  </td>
-                  <td>
-                    <div className="actions">
-                      <button type="button" onClick={() => handleOpenModal(product)}>
-                        <PencilIcon />
-                      </button>
-                      <button type="button" onClick={() => handleOpenDeleteModal(product)}>
-                        <TrashIcon />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
+          {activeTab === 'products' && (
+            <>
+              <Title
+                title='Produtos'
+                quantity={products.length}
+                label='Novo Produto'
+                onClick={() => handleOpenProductModal()}
+              />
+              <Table>
+                <thead>
+                  <tr>
+                    <th style={{ width: '15%' }}>Imagem</th>
+                    <th style={{ width: '30%' }}>Nome</th>
+                    <th style={{ width: '25%' }}>Categoria</th>
+                    <th style={{ width: '25%' }}>Preço</th>
+                    <th style={{ width: '5%' }}>Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {products.map(product => (
+                    <tr key={product._id}>
+                      <td>
+                        <img
+                          src={`http://localhost:3001/uploads/${product.imagePath}`}
+                          alt={product.name}
+                          width="48"
+                          height="40"
+                        />
+                      </td>
+                      <td>{product.name}</td>
+                      <td>{`${product.category.icon} ${product.category.name}`}</td>
+                      <td>{formatCurrency(product.price)}
+                      </td>
+                      <td>
+                        <div className="actions">
+                          <button type="button" onClick={() => handleOpenProductModal(product)}>
+                            <PencilIcon />
+                          </button>
+                          <button type="button" onClick={() => handleOpenDeleteProductModal(product)}>
+                            <TrashIcon />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </>
+          )}
+          {activeTab == 'categories' && (
+            <>
+              <Title
+                title='Categorias'
+                quantity={categories.length}
+                label='Nova Categoria'
+                onClick={() => handleOpenCategoryModal()}
+              />
+              <Table>
+                <thead>
+                  <tr>
+                    <th>Emoji</th>
+                    <th style={{ width: '90%' }}>Nome</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {categories.map(category => (
+                    <tr key={category._id}>
+                      <td>{category.icon}</td>
+                      <td>{category.name}</td>
+                      <td>
+                        <div className="actions">
+                          <button type="button" onClick={() => handleOpenCategoryModal(category)}>
+                            <PencilIcon />
+                          </button>
+                          <button type="button" onClick={() => handleOpenDeleteCategoryModal(category)}>
+                            <TrashIcon />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </>
+          )}
         </NavContent>
       </Container>
     </>
