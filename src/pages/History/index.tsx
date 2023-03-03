@@ -59,16 +59,16 @@ export function History() {
       <Table>
         <thead>
           <tr>
-            <th>Mesa</th>
-            <th className='filter'>
+            <th style={{ width: '5%' }}>Mesa</th>
+            <th style={{ width: '5%' }} className='filter'>
               <button type='button' onClick={() => console.log('open calendar')}>
                 Data <FilterIcon />
               </button>
             </th>
-            <th>Nome</th>
-            <th style={{ width: '240px' }}>Categoria</th>
-            <th>Total</th>
-            <th>Ações</th>
+            <th style={{ width: '35%' }}>Nome</th>
+            <th style={{ width: '25%' }}>Categoria</th>
+            <th style={{ width: '25%' }}>Total</th>
+            <th style={{ width: '5%' }}>Ações</th>
           </tr>
         </thead>
         <tbody>
