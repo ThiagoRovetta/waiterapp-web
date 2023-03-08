@@ -1,9 +1,10 @@
+import { useState } from 'react';
+
 import { Actions, Body, ModalBody, Overlay, ProductContainer } from './styles';
 
 import closeIcon from '../../assets/images/close-icon.svg';
 import { Product } from '../../types/Product';
 import { formatCurrency } from '../../utils/formatCurrency';
-import { useState } from 'react';
 
 interface DeleteProductModalProps {
   visible: boolean;

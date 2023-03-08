@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { Container, Content } from './styles';
+
 import { HomeIcon } from '../Icons/HomeIcon';
 import { RestartIcon } from '../Icons/RestartIcon';
 import { RestartModal } from '../RestartModal';
 import { HistoryIcon } from '../Icons/HistoryIcon';
 import { MenuIcon } from '../Icons/MenuIcon';
+import { UsersIcon } from '../Icons/UsersIcon';
 
 interface PageDetails {
   [args: string]: {
@@ -31,6 +33,11 @@ const pageDetails: PageDetails = {
     name: 'Cardápio',
     description: 'Gerencie os produtos do seu estabelecimento',
     Icon: MenuIcon
+  },
+  users: {
+    name: 'Usuários',
+    description: 'Cadastre e gerencie seus usuários',
+    Icon: UsersIcon
   },
 };
 

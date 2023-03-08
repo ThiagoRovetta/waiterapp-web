@@ -1,6 +1,17 @@
-export function EyeIcon() {
+interface EyeIconProps {
+  onClick: () => void;
+}
+
+export function EyeIcon({ onClick }: EyeIconProps) {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      onClick={onClick}
+    >
       <path
         fillRule="evenodd"
         clipRule="evenodd"

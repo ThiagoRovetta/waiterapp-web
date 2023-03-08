@@ -12,6 +12,7 @@ import { Home } from './pages/Home';
 import { OrdersProvider } from './contexts/OrdersContext';
 import { History } from './pages/History';
 import { Menu } from './pages/Menu';
+import { Users } from './pages/Users';
 
 export function App() {
   return (
@@ -40,6 +41,7 @@ export function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/history" element={<History />} />
             <Route path="/menu" element={<Menu />} />
+            <Route path="/users" element={<Users />} />
           </Route>
         </Routes>
       </AuthProvider>
