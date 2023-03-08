@@ -9,6 +9,7 @@ import { RestartModal } from '../RestartModal';
 import { HistoryIcon } from '../Icons/HistoryIcon';
 import { MenuIcon } from '../Icons/MenuIcon';
 import { UsersIcon } from '../Icons/UsersIcon';
+import { ProfileIcon } from '../Icons/ProfileIcon';
 
 interface PageDetails {
   [args: string]: {
@@ -38,6 +39,11 @@ const pageDetails: PageDetails = {
     name: 'Usuários',
     description: 'Cadastre e gerencie seus usuários',
     Icon: UsersIcon
+  },
+  profile: {
+    name: 'Meu Perfil',
+    description: 'Gerencie seu perfil',
+    Icon: ProfileIcon
   },
 };
 

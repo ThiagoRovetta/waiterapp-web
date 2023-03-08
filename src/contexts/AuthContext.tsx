@@ -2,6 +2,7 @@ import { createContext, ReactNode, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import { User } from '../types/User';
 import { api } from '../utils/api';
 
 interface AuthProviderProps {
@@ -13,27 +14,21 @@ interface AuthParms {
 	password: string;
 }
 
-type CurrentUser = {
-  _id: string;
-  name: string;
-  email: string;
-  role: string;
-};
-
 interface AuthContextData {
 	authenticated: boolean;
-  currentUser: CurrentUser | null;
+  currentUser: User | null;
 	handleLogin: (parms: AuthParms) => void;
 	handleLogout: () => void;
   passwordError: boolean;
   setPasswordError: React.Dispatch<React.SetStateAction<boolean>>;
+  updateCurrentUser: (user: User) => void;
 }
 
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [authenticated, setAuthenticated] = useState(false);
-  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   const [passwordError, setPasswordError] = useState(false);
 
@@ -96,8 +91,21 @@ export function AuthProvider({ children }: AuthProviderProps) {
     navigate('/login');
   }
 
+  async function updateCurrentUser(user: User) {
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    setCurrentUser(user);
+  }
+
   return (
-    <AuthContext.Provider value={{ authenticated, currentUser, handleLogin, handleLogout, passwordError, setPasswordError }}>
+    <AuthContext.Provider value={{
+      authenticated,
+      currentUser,
+      handleLogin,
+      handleLogout,
+      passwordError,
+      setPasswordError,
+      updateCurrentUser
+    }}>
       {children}
     </AuthContext.Provider>
   );

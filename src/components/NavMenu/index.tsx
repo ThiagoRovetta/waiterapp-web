@@ -46,8 +46,8 @@ export function NavMenu() {
         </NavContainer>
       </GroupedItems>
       <GroupedItems>
-        <NavContainer className={`${location.pathname.includes('my_profile') ? 'active' : ''}`}>
-          <Link to="my_profile">
+        <NavContainer className={`${location.pathname.includes('profile') ? 'active' : ''}`}>
+          <Link to="profile">
             <ProfileIcon />
             <p>Meu Perfil</p>
           </Link>

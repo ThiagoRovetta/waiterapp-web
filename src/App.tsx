@@ -13,6 +13,7 @@ import { OrdersProvider } from './contexts/OrdersContext';
 import { History } from './pages/History';
 import { Menu } from './pages/Menu';
 import { Users } from './pages/Users';
+import { Profile } from './pages/Profile';
 
 export function App() {
   return (
@@ -42,6 +43,7 @@ export function App() {
             <Route path="/history" element={<History />} />
             <Route path="/menu" element={<Menu />} />
             <Route path="/users" element={<Users />} />
+            <Route path="/profile" element={<Profile />} />
           </Route>
         </Routes>
       </AuthProvider>
