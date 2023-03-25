@@ -85,7 +85,7 @@ export function History() {
               <td>
                 <div className="actions">
                   <button type="button" onClick={() => handleOpenModal(order, true)}>
-                    <EyeIcon />
+                    <EyeIcon onClick={() => console.log()} />
                   </button>
                   <button type="button" onClick={() => handleOpenModal(order)}>
                     <TrashIcon />
