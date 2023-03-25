@@ -53,6 +53,10 @@ export function Profile() {
     setIsUserModalVisible(false);
   }
 
+  if (!currentUser) {
+    return null;
+  }
+
   return (
     <>
       <UserModal
@@ -75,10 +79,10 @@ export function Profile() {
           </tr>
         </thead>
         <tbody>
-          <tr key={currentUser!._id}>
-            <td>{currentUser!.name}</td>
-            <td>{currentUser!.email}</td>
-            <td>{currentUser!.role === 'ADMIN' ? 'Administrador' : 'Garçom'}</td>
+          <tr key={currentUser?._id}>
+            <td>{currentUser?.name}</td>
+            <td>{currentUser?.email}</td>
+            <td>{currentUser?.role === 'ADMIN' ? 'Administrador' : 'Garçom'}</td>
             <td>
               <div className='actions'>
                 <button type='button' onClick={() => handleOpenUserModal()}>
