@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const api = axios.create({
-  baseURL: 'http://192.168.0.76:3001'
+  baseURL: import.meta.env.VITE_API_URL
 });
 
 api.interceptors.response.use((response) => response, (error) => {
