@@ -353,7 +353,7 @@ export function Menu() {
                     <tr key={product._id}>
                       <td>
                         <img
-                          src={`http://localhost:3001/uploads/${product.imagePath}`}
+                          src={`${import.meta.env.VITE_API_URL}/uploads/${product.imagePath}`}
                           alt={product.name}
                           width="48"
                           height="40"

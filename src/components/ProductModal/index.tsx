@@ -151,7 +151,7 @@ export function ProductModal({
   useEffect(() => {
     setImagePath(product?.imagePath || null);
     setImageFile(product?.imagePath ? new Blob([product.imagePath], { type: 'image/png' }) : null);
-    setImagePreview(product?.imagePath ? `http://localhost:3001/uploads/${product.imagePath}` : undefined);
+    setImagePreview(product?.imagePath ? `${import.meta.env.VITE_API_URL}/uploads/${product.imagePath}` : undefined);
     setName(product?.name || '');
     setDescription(product?.description || '');
     setShowAllCategories(product === null ? true : false);

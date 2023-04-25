@@ -45,7 +45,7 @@ export function DeleteProductModal({ visible, onClose, onDeleteProduct, product 
           <p>Tem certeza que deseja excluir o produto?</p>
           <ProductContainer>
             <div className="product">
-              <img src={`http://localhost:3001/uploads/${product.imagePath}`} alt={product.name} />
+              <img src={`${import.meta.env.VITE_API_URL}/uploads/${product.imagePath}`} alt={product.name} />
               <div>
                 <div className="category">
                   <p>{product.category.icon}</p>

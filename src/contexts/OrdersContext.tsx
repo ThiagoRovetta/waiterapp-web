@@ -27,7 +27,7 @@ export function OrdersProvider({ children }: OrdersProviderProps) {
   const [archivedOrders, setArchivedOrders] = useState<Order[]>([]);
 
   useEffect(() => {
-    const socket = socketIo('http://localhost:3001', {
+    const socket = socketIo(`${import.meta.env.VITE_API_URL}`, {
       transports: ['websocket'],
     });
 
